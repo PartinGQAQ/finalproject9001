@@ -134,7 +134,7 @@ def display_in_curses(stdscr, gameboard):
     y = 4
     for row in gameboard.board:
         y += 2
-        x = 7
+        x = 8
         for cell in row:
             if cell == 0:
                 color = curses.color_pair(0)
