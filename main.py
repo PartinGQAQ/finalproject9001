@@ -131,7 +131,7 @@ def display_in_curses(stdscr, gameboard):
     curses.init_pair(10, 15, 52)  # 2048
 
     # Display the game grid
-    y = 4
+    y = 5
     for row in gameboard.board:
         y += 2
         x = 8
@@ -166,7 +166,7 @@ def display_in_curses(stdscr, gameboard):
             stdscr.attron(color)
             stdscr.addstr(y, x, text)
             stdscr.attroff(color)
-            x += 7  # column spacing
+            x += 6  # column spacing
     stdscr.refresh()
 
 
