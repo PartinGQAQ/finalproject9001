@@ -1,84 +1,61 @@
-# 2048 Terminal Game (Curses Version)
+## How to Run
 
-This is a terminal-based implementation of the classic **2048 game**, built using Python's `curses` library. It includes a persistent top score list, player name entry, and redo functionality with limited lives.
+### Requirements
 
----
+- Python 3.6 or above
+- A terminal that supports the `curses` library (Linux/macOS or compatible terminal on Windows)
 
-## 🎮 How to Play
+### Running the Game
 
-### 🔧 Setup
-
-Make sure you are using Python 3.6+ and your terminal supports `curses`.
-
-### 🛠️ Run the Game
-
-In your terminal, execute:
+From the terminal, navigate to the project folder and run:
 
 ```bash
 python3 game.py
 ```
 
-> Make sure your terminal window is **wide enough** (e.g., 80x24) to display the grid properly.
+Ensure your terminal window is wide enough (minimum 80x24 recommended) for proper display.
 
 ---
 
-## 🧑 Main Menu
+## Menu Navigation
 
-Navigate using **UP** / **DOWN** arrow keys and confirm with **Enter**:
+Use the arrow keys (↑ and ↓) to move between options and press Enter to select:
 
-- `> Start Game <` — Begin a new game.
-- `Top list` — View top 10 players by score.
-- `Quit` — Exit the program.
-
----
-
-## 🎲 In-Game Controls
-
-| Key       | Action                            |
-| --------- | --------------------------------- |
-| `↑ ↓ ← →` | Move tiles up/down/left/right     |
-| `r`       | Undo last move (if lives > 0)     |
-| `q`       | Quit the game and save your score |
+- `Start Game` – begin a new game session
+- `Top list` – display the top 10 high scores
+- `Quit` – exit the game
 
 ---
 
-## ❤️ Special Features
+## Game Controls
 
-### ✍️ Name Input
-
-At the start of the game, you'll be prompted to enter your **player name** (up to 20 characters). This is used for the Top List.
-
-### 🧠 Redo Feature
-
-You begin with **3 lives**. Press `r` to redo your last move. If you run out of lives, redo will no longer be available.
-
-> ❗ You’ll see: `NO COINS!💰 Give me more money next time!!` if lives are used up.
-
-### 🏆 Top List
-
-Your score will be saved upon quitting or losing the game. The system maintains the **top 10 scores** in a file named `top_list.txt`.
+| Key        | Function                             |
+| ---------- | ------------------------------------ |
+| Arrow keys | Move tiles in the desired direction  |
+| `r`        | Undo the last move (if lives remain) |
+| `q`        | Quit the game and save score         |
 
 ---
 
-## 📁 Files
+## Features
 
-| File           | Description                       |
-| -------------- | --------------------------------- |
-| `game.py`      | Main game logic                   |
-| `top_list.txt` | Stores top 10 scores persistently |
-| `README.md`    | This instruction file             |
+- **Name Entry**: At the beginning of each game, you will be asked to enter your name. It will be recorded in the top scores.
+- **Redo Function**: You start with 3 lives. Each time you press `r`, a redo consumes one life. Redo is unavailable when lives run out.
+- **Top Score List**: Your final score is saved if it ranks in the top 10. These scores are stored in `top_list.txt`.
 
 ---
 
-## ❓ Troubleshooting
+## Files in the Project
 
-- If arrow keys don't work, ensure you're using a terminal that supports `curses` (e.g., VS Code terminal, macOS Terminal, Ubuntu CLI).
-- If characters are not aligned, try resizing your terminal window.
-
----
-
-## 📜 License
-
-This project is for educational and personal use. Feel free to modify and enhance it!
+| File           | Purpose                                 |
+| -------------- | --------------------------------------- |
+| `game.py`      | Contains all the game logic             |
+| `top_list.txt` | Stores the top 10 scores (auto-created) |
+| `README.md`    | Instructions for running and playing    |
 
 ---
+
+## Notes
+
+- If arrow keys do not respond, make sure your terminal emulator supports `curses`.
+- To reset the top score list, simply delete the `top_list.txt` file.
