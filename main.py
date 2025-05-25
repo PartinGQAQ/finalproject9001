@@ -5,6 +5,7 @@ from enum import Enum
 import curses
 
 
+# Define movement directions as an Enum for clarity and safety
 class Direction(Enum):
     UP = 'up'
     DOWN = 'down'
@@ -12,13 +13,17 @@ class Direction(Enum):
     RIGHT = 'right'
 
 
+# Load the list of top scores from a local file
 def load_top_list():
+    """
+    Load scores from 'top_list.txt' and return a list of (name, score) pairs.
+    """
     if not os.path.exists('top_list.txt'):
         return []
 
     with open('top_list.txt', 'r') as f:
         lines = f.readlines()
-
+    # Convert each line into a (name, score) tuple
     top_list = []
     for line in lines:
         name, score = line.strip().split(',')
@@ -26,12 +31,14 @@ def load_top_list():
     return top_list
 
 
+# Write the updated top list back to the file
 def write_top_list(top_list):
     with open('top_list.txt', 'w') as f:
         for name, score in top_list:
             f.write(f"{name},{score}\n")
 
 
+# Add a new (name, score) entry, keep only top 10, and write to file
 def update_top_list(name, score):
     top_list = load_top_list()
     top_list.append((name, score))
@@ -40,7 +47,14 @@ def update_top_list(name, score):
     write_top_list(top_list)
 
 
+# Prompt the user to input their name using a curses interface
 def display_input_name(stdscr):
+    """
+    Prompt the user to enter their name using the curses screen.
+
+    :param stdscr: curses screen object
+    :return: str, the player's name
+    """
     curses.echo()
     stdscr.clear()
     stdscr.addstr(5, 5, "Please enter your name (press Enter to confirm): ")
@@ -51,6 +65,7 @@ def display_input_name(stdscr):
     return name
 
 
+# Display the main menu and handle user navigation with arrow keys
 def display_manu(stdscr):
     num = 0
     info_list = [
@@ -64,6 +79,8 @@ def display_manu(stdscr):
         stdscr.addstr(9, 7, f"{info_list[1]:^15}")
         stdscr.addstr(11, 6, f" {info_list[2]:^15}")
         key = stdscr.getch()
+
+        # Navigate menu using up/down arrows
         if key == curses.KEY_UP:
             info_list[num] = info_list[num][2:-2]
             num -= 1
@@ -76,6 +93,7 @@ def display_manu(stdscr):
             num = num % 3
             info_list[num] = "> " + info_list[num] + " <"
             continue
+        # Enter key: trigger action based on selection
         elif key in [curses.KEY_ENTER, 10, 13] and num == 0:
             return "start"
         elif key in [curses.KEY_ENTER, 10, 13]  and num == 2:
@@ -91,7 +109,7 @@ def display_toplist(stdscr):
         stdscr.addstr(i + 5, 6, f" {name[0]}, {name[1]}")
 
 
-
+# Display the game board and game info using curses text UI
 def display_in_curses(stdscr, gameboard):
     stdscr.clear()
     stdscr.addstr(1, 7, "Let's 2048! \n")
@@ -111,7 +129,7 @@ def display_in_curses(stdscr, gameboard):
     curses.init_pair(9, 15, 88)  # 1024
     curses.init_pair(10, 15, 52)  # 2048
 
-    # display the board on curses
+    # Display the game grid
     y = 4
     for row in gameboard.board:
         y += 2
@@ -153,6 +171,12 @@ def display_in_curses(stdscr, gameboard):
 
 class GameBoard:
     def __init__(self, life = 3, top_list=None):
+        """
+        Initialize the game board (4x4 grid), score, life counter, and player state.
+
+        :param life: int, number of redo opportunities
+        :param top_list: optional list of top player scores
+        """
         self.top_list = [] if top_list is None else top_list
         self.board = [[0 for _ in range(4)] for _ in range(4)]
         self.set_new_point()
@@ -175,6 +199,10 @@ class GameBoard:
 
 
     def display(self):
+        """
+        Print the current game board to the terminal.
+        Mainly used for non-curses debugging or testing purposes.
+        """
         for row in self.board:
             for cell in row:
                 print(cell, end=" " * int(4 - len(str(cell))))
@@ -182,7 +210,9 @@ class GameBoard:
 
     def set_new_point(self):
         """
-        :return: a coordinate of the new 2 (4 wasn't completed)
+        Randomly place a new '2' tile in one of the empty cells on the board.
+
+        :return: bool, True if a tile was placed, False if no empty cells exist
         """
         cell = []
         for x in range(4):
@@ -198,7 +228,9 @@ class GameBoard:
 
     def check_is_defeated(self) -> bool:
         """
-        :return: boolean if this game is defeated
+        Check whether the game is over, i.e., no moves or merges possible.
+
+        :return: bool, True if the game is lost, False otherwise
         """
         flag = True
         # check for any empty cell
@@ -217,6 +249,13 @@ class GameBoard:
         return flag
 
     def combine(self, direction):
+        """
+        Perform the shifting phase of the swipe: move tiles in the specified direction
+        without merging. Called before and after the merge phase to compact the grid.
+
+        :param direction: Direction enum (UP, DOWN, LEFT, RIGHT)
+        :return: bool, True if any tile was moved
+        """
         moved = False
         for _ in range(3):
             if direction == Direction.UP:
@@ -253,9 +292,15 @@ class GameBoard:
 
     def swipe(self, command):
         """
-        Swipe the table which include four direction up, down, left, and right
-        :param command:
-        :return: table
+        Perform a full move in the specified direction, including merging and compacting.
+
+        Steps:
+        1. Shift tiles in the given direction (via combine)
+        2. Merge adjacent tiles of equal value
+        3. Shift again to fill in any new gaps
+
+        :param command: Direction enum (UP, DOWN, LEFT, RIGHT)
+        :return: bool, True if the board state changed
         """
         moved = self.combine(command)
         if command == Direction.UP:
