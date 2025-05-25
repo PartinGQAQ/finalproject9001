@@ -112,10 +112,11 @@ def display_toplist(stdscr):
 # Display the game board and game info using curses text UI
 def display_in_curses(stdscr, gameboard):
     stdscr.clear()
-    stdscr.addstr(1, 7, "Let's 2048! press, Use the arrow keys to play the game\n")
-    stdscr.addstr(2, 7, "Press Q to exit \n")
-    stdscr.addstr(3, 7, f"You have {gameboard.get_life()} chances to redo, and press R to redo.")
-    stdscr.addstr(4, 7, f"Score: {gameboard.score}")
+    stdscr.addstr(1, 7, "Let's 2048! press")
+    stdscr.addstr(2, 7, "Use the arrow keys to play the game\n")
+    stdscr.addstr(3, 7, "Press Q to exit \n")
+    stdscr.addstr(4, 7, f"You have {gameboard.get_life()} chances to redo, and press R to redo.")
+    stdscr.addstr(5, 7, f"Score: {gameboard.score}")
 
     # different colors of different points
     curses.init_pair(1, curses.COLOR_BLACK, 228)  # 4
@@ -165,7 +166,7 @@ def display_in_curses(stdscr, gameboard):
             stdscr.attron(color)
             stdscr.addstr(y, x, text)
             stdscr.attroff(color)
-            x += 6  # column spacing
+            x += 7  # column spacing
     stdscr.refresh()
 
 
