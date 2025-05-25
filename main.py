@@ -112,7 +112,7 @@ def display_toplist(stdscr):
 # Display the game board and game info using curses text UI
 def display_in_curses(stdscr, gameboard):
     stdscr.clear()
-    stdscr.addstr(1, 7, "Let's 2048! \n")
+    stdscr.addstr(1, 7, "Let's 2048! press, Use the arrow keys to play the game\n")
     stdscr.addstr(2, 7, "Press Q to exit \n")
     stdscr.addstr(3, 7, f"You have {gameboard.get_life()} chances to redo, and press R to redo.")
     stdscr.addstr(4, 7, f"Score: {gameboard.score}")
