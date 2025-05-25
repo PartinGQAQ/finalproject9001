@@ -105,8 +105,8 @@ def display_manu(stdscr):
 def display_toplist(stdscr):
     stdscr.clear()
     for i, name in enumerate(load_top_list()):
-        stdscr.addstr(i + 5, 0, f"Top {i + 1}")
-        stdscr.addstr(i + 5, 6, f" {name[0]}, {name[1]}")
+        stdscr.addstr(i + 5, 1, f"Top {i + 1}:")
+        stdscr.addstr(i + 5, 7, f" name: {name[0]}, score: {name[1]}")
 
 
 # Display the game board and game info using curses text UI
